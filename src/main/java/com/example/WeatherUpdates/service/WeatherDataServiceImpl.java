@@ -7,9 +7,9 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class WeatherDataServiceImpl implements WeatherDataService {
 
-	 
-	private String api_key="166139a7e3dc65981b80ed2374522956";
-	 private String api_url="https://openweathermap.org/";
+	private String api_url="https://openweathermap.org/";
+	private String api_key="6a377fb194798a72c56f9119b5261d0a";
+	
 	@Override
 	public String getWeatherData(String city) {
 		

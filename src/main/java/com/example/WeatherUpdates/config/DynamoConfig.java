@@ -17,17 +17,17 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 @Configuration
 public class DynamoConfig {
 	
-	@Value("${aws.dynamodb.accessKey}")
+	@Value("${aws.access.key}")
 	private String awsAccessKey;
 	
-	@Value("${aws.dynamodb.secretKey}")
+	@Value("${aws.access.secret-key}")
 	private String awsSecretKey;
 	
 	@Value("${aws.dynamodb.endpoint}")
 	private String awsDynamoDbEndPoint;
 	
 	
-	@Value("${aws.dynamodb.region}")
+	@Value("${aws.region}")
 	private String awsRegion;
 	
 	

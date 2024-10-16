@@ -1,34 +1,54 @@
 package com.example.WeatherUpdates;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.Map;
+import java.util.UUID;
 
-import com.amazonaws.serverless.exceptions.ContainerInitializationException;
-import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
-import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
-import com.amazonaws.serverless.proxy.spring.SpringBootLambdaContainerHandler;
-import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import com.example.WeatherUpdates.dto.WeatherDataDto;
+import com.example.WeatherUpdates.service.WeatherDataServiceImpl;
 
 
 
-public class StreamLambdaHandler implements RequestStreamHandler {
-    private static SpringBootLambdaContainerHandler<AwsProxyRequest, AwsProxyResponse> handler;
-    static {
-        try {
-            handler = SpringBootLambdaContainerHandler.getAwsProxyHandler(WeatherUpdatesApplication.class);
-        } catch (ContainerInitializationException e) {
-            // if we fail here. We re-throw the exception to force another cold start
-            e.printStackTrace();
-            throw new RuntimeException("Could not initialize Spring Boot application", e);
+
+
+    public class StreamLambdaHandler implements RequestHandler<Map<String, String>, APIGatewayProxyResponseEvent> {
+    	private final WeatherDataServiceImpl weatherService = new WeatherDataServiceImpl();
+        private final AmazonDynamoDB dynamoDB = AmazonDynamoDBClientBuilder.defaultClient();
+        private final DynamoDBMapper mapper = new DynamoDBMapper(dynamoDB);
+        @Override
+        public APIGatewayProxyResponseEvent handleRequest(Map<String, String> event, Context context) {
+        	APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
+        	 try {
+                 String city = event.get("city");
+                 if (city == null || city.isEmpty()) {
+                     response.setStatusCode(400);
+                     response.setBody("City parameter is missing");
+                     return response;
+                 }
+     
+                 String weatherData = weatherService.getWeatherData(city);
+                 WeatherDataDto data = new WeatherDataDto();
+                 String id = UUID.randomUUID().toString(); 
+                 data.setCity(id);
+                 data.setCity(city);
+                 data.setData(weatherData);
+                 mapper.save(data);
+     
+                 response.setStatusCode(200);
+                 response.setBody(weatherData);
+             } catch (Exception e) {
+                 response.setStatusCode(500);
+                 response.setBody("An error occurred: " + e.getMessage());
+             }
+             return response;
         }
-    }
-	@Override
-	public void handleRequest(InputStream input, OutputStream output,
-			com.amazonaws.services.lambda.runtime.Context context) throws IOException {
-		        handler.proxyStream(input, output, context);
-		    }
-		
-	}
+    
+    	}
+    
 
 
