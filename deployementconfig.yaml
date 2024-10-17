@@ -164,9 +164,9 @@ Resources:
           - /
           - '*'
           - /
-		  -'*'
-		  -/
-		  -'*'
+		  - '*'
+		  - /
+		  - '*'
 
   WeatherApiweatherGETApiPermissionTestWeatherAppStackWeatherApi37B19730GETweatherBEDBC174:
     Type: 'AWS::Lambda::Permission'
