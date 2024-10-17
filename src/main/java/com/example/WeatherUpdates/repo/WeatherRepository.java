@@ -15,5 +15,9 @@ public class WeatherRepository {
 	 public void save(WeatherDataDto data) {
 		 dynamoDBMapper.save(data);
 	 }
+	 
+	 public void saveToDynamoDB(WeatherDataDto weatherData) {
+	        dynamoDBMapper.save(weatherData);
+	    }
 
 }

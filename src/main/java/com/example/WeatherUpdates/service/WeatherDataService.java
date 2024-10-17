@@ -1,7 +1,9 @@
 package com.example.WeatherUpdates.service;
 
+import com.example.WeatherUpdates.dto.WeatherDataDto;
+
 public interface WeatherDataService {
 	
-	public String getWeatherData(String city);
+	public WeatherDataDto getWeatherData(String city);
 
 }
