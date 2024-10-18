@@ -16,25 +16,22 @@ import com.example.WeatherUpdates.service.WeatherDataService;
 @RestController
 @RequestMapping("/weather")
 public class WeatherInfoController {
-	
-	
-	  @Autowired 
-	  WeatherDataService weatherDataService;
-	 
-	
+
+	@Autowired 
+	WeatherDataService weatherDataService;
 
 	@GetMapping("/{city}")
 	public ResponseEntity<WeatherDataDto> getWeatherData(@PathVariable String city){
 		WeatherDataDto weatherData=weatherDataService.getWeatherData(city);
 		return ResponseEntity.ok(weatherData);
-		
+
 	}
-	
+
 	@PostMapping("/add")
 	public ResponseEntity<WeatherDataDto> getWeatherDatatwo(@RequestBody String city){
 		WeatherDataDto weatherData=weatherDataService.getWeatherData(city);
 		return ResponseEntity.ok(weatherData);
-		
+
 	}
 
 }

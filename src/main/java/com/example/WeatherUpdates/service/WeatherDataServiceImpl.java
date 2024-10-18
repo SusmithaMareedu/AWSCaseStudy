@@ -42,6 +42,7 @@ public class WeatherDataServiceImpl implements WeatherDataService {
 	public WeatherDataDto getWeatherData(String city) {
 		String url = String.format("%s?q=%s&appid=%s", api_url, city, api_key);
 
+		System.out.println("getting weather Data`1`");
 
 		ResponseEntity<String> response = rs.getForEntity(url, String.class);
 		System.out.println(response); 

@@ -12,9 +12,6 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 
 
-
-
-
 public class StreamLambdaHandler implements RequestStreamHandler{
 	 
 	private static final SpringBootLambdaContainerHandler<AwsProxyRequest, AwsProxyResponse> handler;
