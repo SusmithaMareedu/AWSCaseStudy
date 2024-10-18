@@ -8,7 +8,7 @@ import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 
 @Configuration
 public class DynamoConfig {
@@ -62,10 +62,10 @@ public class DynamoConfig {
 	        return builder.build();
 	    }
 
-	    @Bean 
-	    public DynamoDBMapperConfig dynamoDBMapperConfig() { 
-	    	return DynamoDBMapperConfig.DEFAULT; 
-	    	}
+	    @Bean
+	    public DynamoDBMapper mapper(){
+	        return new DynamoDBMapper(amazonDynamoDB());
+	    }
 
 
 }
